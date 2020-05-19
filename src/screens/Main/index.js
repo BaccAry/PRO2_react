@@ -18,11 +18,28 @@ export default function Main() {
     setUsers([
       ...users,
       {
-        idUser: users[users.length - 1].idUser + 1,
+        idUser: users.length === 0 ? 1 : users[users.length - 1].idUser + 1,
         firstName: "AAA",
         lastName: "BBB",
       },
     ]);
+  };
+
+  const deleteUser = (id) => {
+    const filtUsers = users.filter((el) => el.idUser !== id);
+    setUsers(filtUsers);
+  };
+
+  const sortUsers = (sortValue) => {
+    let sortedUsers = users;
+    if (typeof users[0][sortValue] === "string") {
+      sortedUsers = users.sort((a, b) =>
+        a[sortValue].localeCompare(b[sortValue])
+      );
+    } else if (typeof users[0][sortValue] === "number") {
+      sortedUsers = users.sort((a, b) => a[sortValue] - b[sortValue]);
+    }
+    setUsers(sortedUsers);
   };
 
   const setCurrentlySelectedUser = (user) => {
@@ -41,6 +58,8 @@ export default function Main() {
           users={users}
           setSelectedUser={setCurrentlySelectedUser}
           selectedUser={selectedUser}
+          deleteUser={deleteUser}
+          sortUsers={sortUsers}
         />
       </div>
     </>
